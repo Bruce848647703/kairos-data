@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kairos-data"
+version = "0.1.0"
+description = "Kairos Data —— 自研轻量级金融数据管道/行情库（复权/日历对齐/时点正确性/本地存储）"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [{ name = "Bruce848647703" }]
+keywords = ["quant", "data", "finance", "pipeline", "point-in-time", "ohlcv"]
+dependencies = [
+    "numpy>=1.21",
+    "pandas>=1.3",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0"]
+parquet = ["pyarrow>=8.0"]
+
+[tool.setuptools]
+packages = ["kairos_data"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
