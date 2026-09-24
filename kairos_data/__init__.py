@@ -35,6 +35,19 @@ from .schema import (
 )
 from .sources import CSVSource, DataSource, ParquetSource, SyntheticSource
 from .store import DataStore
+from . import ashare, universe
+from .ashare import (
+    TencentKlineSource,
+    fetch_daily,
+    fetch_daily_sina,
+    fetch_daily_tencent,
+    fetch_universe,
+    load_ashare_panel,
+    parse_sina_kline,
+    parse_tencent_kline,
+    rows_to_frame,
+)
+from .universe import LIQUID_A_SHARES, SECTORS, name_of, symbols
 
 __version__ = "0.1.0"
 
@@ -54,5 +67,9 @@ __all__ = [
     "asof_merge", "lag",
     # pipeline
     "Pipeline", "Step",
+    # ashare 真实数据
+    "ashare", "universe", "TencentKlineSource", "fetch_daily", "fetch_daily_tencent",
+    "fetch_daily_sina", "fetch_universe", "load_ashare_panel", "parse_tencent_kline",
+    "parse_sina_kline", "rows_to_frame", "LIQUID_A_SHARES", "SECTORS", "symbols", "name_of",
     "__version__",
 ]

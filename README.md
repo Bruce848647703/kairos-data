@@ -83,6 +83,24 @@ merged = asof_merge(daily_px, events, direction="backward")
   `float_precision="round_trip"` 保证逐位一致。
 - **离线可复现**：合成源用 `SeedSequence([seed, crc32(symbol)])` 派生随机流，与调用顺序、其它 symbol 无关。
 
+## 真实 A 股数据
+除合成数据外，本库内置 **A 股真实行情适配器**（腾讯主源 / 新浪回退，原创 HTTP 实现）：
+
+```python
+from kairos_data import ashare, universe
+
+# 1) 联网抓取一篮子流动 A 股前复权日线到本地 CSV
+ashare.fetch_universe(universe.symbols(), "data/ashare", start="2016-01-01")
+
+# 2) 离线读取为对齐的价格/成交量面板（自动处理停牌、上市日、非正价）
+prices, volumes = ashare.load_ashare_panel("data/ashare")   # DataFrame: index=交易日, columns=symbol
+```
+- `universe.LIQUID_A_SHARES` / `SECTORS`：精选跨行业股票池与行业分组。
+- 仓库已随附一份真实数据集 `data/ashare/*.csv`（约 8 年日线，38 只），见 [`data/ashare/DATA_NOTICE.md`](data/ashare/DATA_NOTICE.md)。
+- 抓取脚本：`python examples/fetch_real.py`（需联网）。解析器为纯函数，测试**离线**可跑。
+
+> 数据来自公开行情接口，仅用于研究演示、版权归原作者所有，不构成投资建议。
+
 ## 测试
 ```bash
 make test          # 或 python -m pytest -q
