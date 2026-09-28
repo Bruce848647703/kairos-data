@@ -89,7 +89,7 @@ merged = asof_merge(daily_px, events, direction="backward")
 ```python
 from kairos_data import ashare, universe
 
-# 1) 联网抓取一篮子流动 A 股前复权日线到本地 CSV
+# 1) 联网抓取一篮子流动 A 股后复权(hfq)日线到本地 CSV
 ashare.fetch_universe(universe.symbols(), "data/ashare", start="2016-01-01")
 
 # 2) 离线读取为对齐的价格/成交量面板（自动处理停牌、上市日、非正价）

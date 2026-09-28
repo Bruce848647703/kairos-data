@@ -1,7 +1,7 @@
 """A 股真实行情适配器（公开行情接口）。
 
 数据源：
-- 主源 腾讯行情 ``web.ifzq.gtimg.cn``（前复权日 K，支持按日期窗口分页取长历史）。
+- 主源 腾讯行情 ``web.ifzq.gtimg.cn``（默认后复权 hfq 日 K，支持按日期窗口分页取长历史）。
 - 回退 新浪行情 ``money.finance.sina.com.cn``（取最近 N 个交易日）。
 
 设计：
@@ -34,9 +34,9 @@ Row = Tuple[str, float, float, float, float, float]  # date, open, high, low, cl
 def parse_tencent_kline(node: dict) -> List[Row]:
     """解析腾讯返回的单个 symbol 节点 -> [(date, o, h, l, c, v), ...]。
 
-    腾讯 qfqday/day 每行形如 [date, open, close, high, low, volume, ...]。
+    腾讯 qfqday/hfqday/day 每行形如 [date, open, close, high, low, volume, ...]。
     """
-    arr = node.get("qfqday") or node.get("day") or []
+    arr = node.get("qfqday") or node.get("hfqday") or node.get("day") or []
     out: List[Row] = []
     for r in arr:
         if not isinstance(r, (list, tuple)) or len(r) < 6:
@@ -102,8 +102,8 @@ def _date_windows(start: str, end: str, step_days: int = 700) -> List[Tuple[str,
 
 
 def fetch_daily_tencent(symbol: str, start: str = "2016-01-01", end: Optional[str] = None,
-                        adjust: str = "qfq", delay: float = 0.15) -> pd.DataFrame:
-    """腾讯源：按日期窗口分页抓取前复权日线，拼接为 OHLCV DataFrame。"""
+                        adjust: str = "hfq", delay: float = 0.15) -> pd.DataFrame:
+    """腾讯源：按日期窗口分页抓取后复权(hfq)日线，拼接为 OHLCV DataFrame。"""
     end = end or dt.date.today().isoformat()
     rows: Dict[str, Row] = {}
     for (s, e) in _date_windows(start, end):
@@ -126,7 +126,7 @@ def fetch_daily_sina(symbol: str, datalen: int = 1000) -> pd.DataFrame:
 
 
 def fetch_daily(symbol: str, start: str = "2016-01-01", end: Optional[str] = None,
-                adjust: str = "qfq", source: str = "auto") -> pd.DataFrame:
+                adjust: str = "hfq", source: str = "auto") -> pd.DataFrame:
     """抓取单只 A 股日线。source: 'tencent' | 'sina' | 'auto'（先腾讯失败再新浪）。"""
     if source in ("tencent", "auto"):
         try:
@@ -140,7 +140,7 @@ def fetch_daily(symbol: str, start: str = "2016-01-01", end: Optional[str] = Non
 
 
 def fetch_universe(symbols: Sequence[str], out_dir: str, start: str = "2016-01-01",
-                   end: Optional[str] = None, adjust: str = "qfq",
+                   end: Optional[str] = None, adjust: str = "hfq",
                    delay: float = 0.3, min_rows: int = 200) -> Dict[str, int]:
     """抓取一篮子股票并存为 ``out_dir/<symbol>.csv``，返回 {symbol: rows}。"""
     os.makedirs(out_dir, exist_ok=True)
@@ -189,7 +189,7 @@ def load_ashare_panel(data_dir: str, field: str = "close",
 class TencentKlineSource(DataSource):
     """把腾讯行情包装成统一 ``DataSource`` 接口（load 时联网抓取）。"""
 
-    def __init__(self, adjust: str = "qfq"):
+    def __init__(self, adjust: str = "hfq"):
         self.adjust = adjust
 
     def load(self, symbol: str, start=None, end=None) -> pd.DataFrame:

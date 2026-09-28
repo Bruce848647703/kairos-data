@@ -1,7 +1,7 @@
 """抓取真实 A 股日线数据（腾讯/新浪公开行情）到 data/ashare/。
 
 运行（需联网）： python examples/fetch_real.py
-默认抓取 universe.LIQUID_A_SHARES 全部成分的前复权日线。
+默认抓取 universe.LIQUID_A_SHARES 全部成分的后复权(hfq)日线。
 """
 import os
 import sys
@@ -15,8 +15,8 @@ def main():
     here = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     out = os.path.join(here, "data", "ashare")
     syms = universe.symbols()
-    print(f"抓取 {len(syms)} 只 A 股前复权日线 -> {out}")
-    res = ashare.fetch_universe(syms, out, start="2016-01-01", adjust="qfq", delay=0.3)
+    print(f"抓取 {len(syms)} 只 A 股后复权(hfq)日线 -> {out}")
+    res = ashare.fetch_universe(syms, out, start="2016-01-01", adjust="hfq", delay=0.3)
     ok = {k: v for k, v in res.items() if v >= 200}
     print(f"成功 {len(ok)}/{len(syms)}；总行数 {sum(ok.values())}")
     for s, n in list(ok.items())[:5]:
