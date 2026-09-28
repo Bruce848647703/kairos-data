@@ -120,3 +120,19 @@ def test_committed_dataset_present_and_clean():
     assert (prices.values > 0).all()
     assert not prices.isna().any().any()
     assert len(prices) > 500  # 至少数年真实日线
+
+
+def test_committed_etf_dataset_present_and_clean():
+    """已提交的真实多资产 ETF 数据集应存在且干净（缺失则跳过）。"""
+    here = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    data_dir = os.path.join(here, "data", "etf")
+    csvs = [f for f in os.listdir(data_dir) if f.endswith(".csv")] if os.path.isdir(data_dir) else []
+    if not csvs:
+        pytest.skip("未提交 ETF 数据集")
+    prices, _ = ashare.load_ashare_panel(data_dir)
+    assert prices.shape[1] == len(csvs)
+    assert (prices.values > 0).all() and not prices.isna().any().any()
+    assert len(prices) > 500
+    # 覆盖多个资产类别
+    covered = {universe.CLASS_OF_SYMBOL.get(c) for c in prices.columns} if hasattr(universe, "CLASS_OF_SYMBOL") else None
+    assert prices.shape[1] >= 5

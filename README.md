@@ -97,6 +97,7 @@ prices, volumes = ashare.load_ashare_panel("data/ashare")   # DataFrame: index=�
 ```
 - `universe.LIQUID_A_SHARES` / `SECTORS`：精选跨行业股票池与行业分组。
 - 仓库已随附一份真实数据集 `data/ashare/*.csv`（约 8 年日线，38 只），见 [`data/ashare/DATA_NOTICE.md`](data/ashare/DATA_NOTICE.md)。
+- **多资产 ETF**：`universe.ASSET_CLASS_ETFS` / `ASSET_CLASSES` 提供跨资产池（A股/海外股/黄金/国债/货币），随附真实数据 `data/etf/*.csv`（约 9.7 年，9 只），用于多资产配置/GTAA 研究，见 [`data/etf/DATA_NOTICE.md`](data/etf/DATA_NOTICE.md)。
 - 抓取脚本：`python examples/fetch_real.py`（需联网）。解析器为纯函数，测试**离线**可跑。
 
 > 数据来自公开行情接口，仅用于研究演示、版权归原作者所有，不构成投资建议。
