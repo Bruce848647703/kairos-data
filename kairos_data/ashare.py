@@ -109,9 +109,16 @@ def fetch_daily_tencent(symbol: str, start: str = "2016-01-01", end: Optional[st
     for (s, e) in _date_windows(start, end):
         url = (f"https://web.ifzq.gtimg.cn/appstock/app/fqkline/get"
                f"?param={symbol},day,{s},{e},800,{adjust}")
-        d = _http_json(url)
-        node = (d.get("data") or {}).get(symbol) or {}
-        for r in parse_tencent_kline(node):
+        got: List[Row] = []
+        # 空响应多为限流所致，对历史窗口退避重试（上市后区间不应为空）
+        for attempt in range(4):
+            d = _http_json(url)
+            node = (d.get("data") or {}).get(symbol) or {}
+            got = parse_tencent_kline(node)
+            if got:
+                break
+            time.sleep(0.8 * (attempt + 1))
+        for r in got:
             rows[r[0]] = r
         time.sleep(delay)
     return rows_to_frame([rows[k] for k in sorted(rows)])
