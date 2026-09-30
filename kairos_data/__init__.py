@@ -48,7 +48,8 @@ from .ashare import (
     rows_to_frame,
 )
 from .universe import (LIQUID_A_SHARES, SECTORS, ASSET_CLASS_ETFS, ASSET_CLASSES,
-                        name_of, symbols, etf_symbols)
+                        EXTENDED_NEW, EXT_SECTORS, EXTENDED_A_SHARES,
+                        name_of, symbols, etf_symbols, extended_symbols)
 
 __version__ = "0.1.0"
 
@@ -73,5 +74,6 @@ __all__ = [
     "fetch_daily_sina", "fetch_universe", "load_ashare_panel", "parse_tencent_kline",
     "parse_sina_kline", "rows_to_frame", "LIQUID_A_SHARES", "SECTORS", "symbols", "name_of",
     "ASSET_CLASS_ETFS", "ASSET_CLASSES", "etf_symbols",
+    "EXTENDED_NEW", "EXT_SECTORS", "EXTENDED_A_SHARES", "extended_symbols",
     "__version__",
 ]

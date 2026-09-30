@@ -78,3 +78,37 @@ ASSET_CLASSES: Dict[str, List[str]] = {
 
 def etf_symbols() -> List[str]:
     return list(ASSET_CLASS_ETFS.keys())
+
+
+# ---------------------------------------------------------------------------
+# 扩展池：在 LIQUID_A_SHARES(38) 基础上新增 22 只龙头，覆盖交运/地产/建筑/农业/
+# 公用/国防/通信/机械/材料等更多行业，合计 60 只（对应数据集 data/ashare60）。
+# 默认 38 只池(data/ashare)保持不变，以与既有下游结果一致；扩展池为加法式增强。
+EXTENDED_NEW: Dict[str, str] = {
+    "sh601006": "大秦铁路", "sh601111": "中国国航", "sh600018": "上港集团", "sh601872": "招商轮船",
+    "sz000002": "万科A", "sh600383": "金地集团", "sz001979": "招商蛇口",
+    "sh601186": "中国铁建", "sh601800": "中国交建", "sz000157": "中联重科",
+    "sz000876": "新希望", "sh600598": "北大荒",
+    "sh600886": "国投电力", "sh601985": "中国核电", "sh600025": "华能水电",
+    "sh600893": "航发动力", "sz000768": "中航西飞",
+    "sz000063": "中兴通讯", "sh600050": "中国联通",
+    "sh600309": "万华化学", "sh600019": "宝钢股份", "sh601225": "陕西煤业",
+}
+
+EXT_SECTORS: Dict[str, List[str]] = {
+    "transport": ["sh601006", "sh601111", "sh600018", "sh601872"],
+    "real_estate": ["sz000002", "sh600383", "sz001979"],
+    "construction": ["sh601186", "sh601800", "sz000157"],
+    "agriculture": ["sz000876", "sh600598"],
+    "utilities_ext": ["sh600886", "sh601985", "sh600025"],
+    "defense": ["sh600893", "sz000768"],
+    "telecom": ["sz000063", "sh600050"],
+    "materials_ext": ["sh600309", "sh600019", "sh601225"],
+}
+
+EXTENDED_A_SHARES: Dict[str, str] = {**LIQUID_A_SHARES, **EXTENDED_NEW}
+
+
+def extended_symbols() -> List[str]:
+    """扩展池 60 只（38 核心 + 22 新增）。"""
+    return list(EXTENDED_A_SHARES.keys())
