@@ -1,5 +1,7 @@
 # Kairos Data
 
+[![CI](https://github.com/Bruce848647703/kairos-data/actions/workflows/ci.yml/badge.svg)](https://github.com/Bruce848647703/kairos-data/actions/workflows/ci.yml)
+
 > Kairos 量化系列的数据管道模块 —— 一个**自研、轻量、零重型依赖**的 Python 金融数据/行情库。
 
 `kairos_data` 专注把杂乱的原始行情，变成**干净、日历对齐、时点正确（PIT）**的数据集，
