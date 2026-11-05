@@ -133,6 +133,10 @@ def test_committed_etf_dataset_present_and_clean():
     assert prices.shape[1] == len(csvs)
     assert (prices.values > 0).all() and not prices.isna().any().any()
     assert len(prices) > 500
-    # 覆盖多个资产类别
-    covered = {universe.CLASS_OF_SYMBOL.get(c) for c in prices.columns} if hasattr(universe, "CLASS_OF_SYMBOL") else None
+    # 覆盖多个资产类别（按 ASSET_CLASSES 反查每只 ETF 所属类别）
+    covered = {
+        cls for cls, members in universe.ASSET_CLASSES.items()
+        for symbol in prices.columns if symbol in members
+    }
+    assert len(covered) >= 3, f"资产类别覆盖不足: {sorted(covered)}"
     assert prices.shape[1] >= 5

@@ -51,7 +51,7 @@ from .universe import (LIQUID_A_SHARES, SECTORS, ASSET_CLASS_ETFS, ASSET_CLASSES
                         EXTENDED_NEW, EXT_SECTORS, EXTENDED_A_SHARES,
                         name_of, symbols, etf_symbols, extended_symbols)
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 __all__ = [
     # schema

@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from kairos_data import align, as_of, as_of_row, business_days
+from kairos_data import align, as_of_row, business_days
 
 
 def test_business_days_by_end_excludes_weekend():

@@ -20,7 +20,6 @@ import time
 import urllib.request
 from typing import Dict, List, Optional, Sequence, Tuple
 
-import numpy as np
 import pandas as pd
 
 from .schema import OHLCV_COLUMNS
